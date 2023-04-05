@@ -8,10 +8,12 @@ public class control : MonoBehaviour
     public int speed;
     
     public float jump_speed;
-    private Vector3 tragetCoords = new Vector3(0, 0, 0);
+    private Vector3 tragetCoords = new Vector3(-4.5f, 0, 0);
     private bool isChanged = true;
     private bool isGrounded = true;
     public Rigidbody rb;
+    private bool flag = true;
+
 
     void Update()
     {
@@ -21,7 +23,7 @@ public class control : MonoBehaviour
                 if (currPos > -1 & isChanged)
                 {
                     currPos -= 1;
-                    tragetCoords += new Vector3(-2, 0, 0);
+                    tragetCoords += new Vector3(-3, 0, 0);
                     isChanged = false;
                 }
             }
@@ -31,8 +33,9 @@ public class control : MonoBehaviour
                 if (currPos < 1 & isChanged)
                 {
                     currPos += 1;
-                    tragetCoords += new Vector3(2, 0, 0);
+                    tragetCoords += new Vector3(3, 0, 0);
                     isChanged = false;
+                    
                 }
 
             }
@@ -53,7 +56,7 @@ public class control : MonoBehaviour
 
             float time = Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, tragetCoords, time * 5);
-            transform.Translate(Vector3.forward* time * 5);
+            transform.Translate(Vector3.forward * time * speed);
             tragetCoords = new Vector3(tragetCoords.x, 0, 0) + new Vector3(0, transform.position.y, transform.position.z);
 
 
@@ -65,6 +68,21 @@ public class control : MonoBehaviour
         if(collision.gameObject.CompareTag("Ground")) {
             isGrounded = true;
         }
+        if(collision.gameObject.CompareTag("Rump"))
+        {
+            transform.rotation = new Quaternion(-16, 0, 0, 90);
+            if (flag)
+            {
+                transform.position += new Vector3(0, 1, 0);
+                flag = false;
+            }
+        }
+        else
+        {
+            transform.rotation = new Quaternion(0, 0, 0, 0);
+            flag = true;
+        }
+        
     }
     
 }
